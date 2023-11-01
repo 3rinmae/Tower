@@ -32,7 +32,7 @@ class TowerEventsService {
     if (towerEventToBeUpdated.creatorId.toString() != userId) {
       throw new Forbidden('This is not your event to update')
     }
-    if (towerEventToBeUpdated.isCanceled = true) {
+    if (towerEventToBeUpdated.isCanceled == true) {
       throw new BadRequest('This event is canceled and cannot be edited')
     }
     towerEventToBeUpdated.name = towerEventData.name || towerEventToBeUpdated.name
