@@ -7,18 +7,20 @@ class TowerEventsService {
   async createEvent(towerEventData) {
     const towerEvent = await dbContext.TowerEvents.create(towerEventData)
     await towerEvent.populate('creator', '-email -subs')
+    await towerEvent.populate('ticketCount')
     return towerEvent
   }
 
   async getAllEvents(query) {
     const towerEvents = await dbContext.TowerEvents.find(query)
       .populate('creator', '-email -subs')
-    // .populate('ticketCount')
+      .populate('ticketCount')
     return towerEvents
   }
 
   async getEventById(towerEventId) {
     const towerEvent = await dbContext.TowerEvents.findById(towerEventId).populate('creator', '-email -subs')
+      .populate('ticketCount')
     if (!towerEvent) {
       throw new BadRequest(`${towerEventId} is not a valid ID`)
     }
@@ -29,6 +31,9 @@ class TowerEventsService {
     const towerEventToBeUpdated = await this.getEventById(towerEventId)
     if (towerEventToBeUpdated.creatorId.toString() != userId) {
       throw new Forbidden('This is not your event to update')
+    }
+    if (towerEventToBeUpdated.isCanceled = true) {
+      throw new BadRequest('This event is canceled and cannot be edited')
     }
     towerEventToBeUpdated.name = towerEventData.name || towerEventToBeUpdated.name
     towerEventToBeUpdated.description = towerEventData.description || towerEventToBeUpdated.description

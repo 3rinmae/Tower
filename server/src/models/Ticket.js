@@ -12,7 +12,7 @@ export const TicketSchema = new Schema(
   }
 )
 
-TicketSchema.virtual('towerEvent', {
+TicketSchema.virtual('event', {
   localField: 'eventId',
   foreignField: '_id',
   ref: 'TowerEvent',

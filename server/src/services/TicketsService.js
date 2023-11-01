@@ -15,8 +15,19 @@ class TicketsService {
     // }
     const ticket = await dbContext.Tickets.create(ticketData)
     await ticket.populate('profile', '-email -subs')
-    await ticket.populate('towerEvent')
+    await ticket.populate('event')
     return ticket
+  }
+
+  async getMyTickets(userId) {
+    const tickets = await dbContext.Tickets.find({ accountId: userId })
+      .populate('event')
+    return tickets
+  }
+
+  async getTicketsByEvent(towerEventId) {
+    const tickets = await dbContext.Tickets.find({ eventId: towerEventId }).populate('profile', '-email -subs')
+    return tickets
   }
 }
 
