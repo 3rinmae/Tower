@@ -5,8 +5,7 @@
   <main>
     <router-view />
   </main>
-   <footer class="bg-dark text-light">
-    Made with 💖 by CodeWorks
+   <footer class="">
   </footer>
 </template>
 
@@ -31,6 +30,13 @@ export default {
   --main-height: calc(100vh - 32px - 64px);
 }
 
+body {
+background-image: url(./assets/img/Holi-Color-Transparent-Background.png);
+background-attachment: fixed;
+background-size: cover;
+background-position: top;
+background-color: white;
+}
 
 footer {
   display: grid;
