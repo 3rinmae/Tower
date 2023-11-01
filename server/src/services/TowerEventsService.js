@@ -40,6 +40,16 @@ class TowerEventsService {
     await towerEventToBeUpdated.save()
     return towerEventToBeUpdated
   }
+
+  async cancelEvent(towerEventId, userId) {
+    const towerEvent = await this.getEventById(towerEventId)
+    if (towerEvent.creatorId.toString() != userId) {
+      throw new Forbidden('This is not your event to cancel')
+    }
+    towerEvent.isCanceled = !towerEvent.isCanceled
+    await towerEvent.save()
+    return towerEvent
+  }
 }
 
 export const towerEventsService = new TowerEventsService()
