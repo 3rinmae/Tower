@@ -43,4 +43,15 @@ footer {
   place-content: center;
   height: 32px;
 }
+
+@media screen and (max-width: 768px) {
+  body {
+background-image: url(./assets/img/Holi-Color-Transparent-Background.png);
+background-attachment: fixed;
+background-size: contain;
+background-repeat: no-repeat;
+background-position: 50% 5%;
+background-color: white;
+}
+}
 </style>
