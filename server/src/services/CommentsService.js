@@ -11,6 +11,11 @@ class CommentsService {
     await comment.populate('creator', '-email -subs')
     return comment
   }
+
+  async getCommentsByEvent(towerEventId) {
+    const comments = await dbContext.Comments.find({ eventId: towerEventId }).populate('creator', '-email -subs')
+    return comments
+  }
 }
 
 export const commentsService = new CommentsService()
