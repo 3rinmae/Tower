@@ -1,7 +1,7 @@
-import { AppState } from "../AppState"
-import { TowerEvent } from "../models/TowerEvent"
-import { logger } from "../utils/Logger"
-import { api } from "./AxiosService"
+import { AppState } from "../AppState.js"
+import { TowerEvent } from "../models/TowerEvent.js"
+import { logger } from "../utils/Logger.js"
+import { api } from "./AxiosService.js"
 
 
 class EventsService {
@@ -18,6 +18,13 @@ class EventsService {
     const newEvent = new TowerEvent(res.data)
     AppState.towerEvents.unshift(newEvent)
     return newEvent
+  }
+
+  async getEventById(towerEventId){
+    AppState.activeEvent = null
+    const res = await api.get(`api/events/${towerEventId}`)
+    logger.log('get event by id', res.data)
+    AppState.activeEvent = new TowerEvent(res.data)
   }
 }
 

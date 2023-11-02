@@ -7,7 +7,7 @@
             all
           </button>
           <button @click="changeCategory(category)" class="btn btn-outline-light w-100 mx-sm-2 my-2" role="button"
-            :title="category" v-for="category in categories" :key="category">
+            type="button" :title="category" v-for="category in categories" :key="category">
             {{ category }}
           </button>
           <button v-if="account.id" type="button" class="btn btn-outline-light w-100 mx-0 mx-sm-2 my-2" role="button"
