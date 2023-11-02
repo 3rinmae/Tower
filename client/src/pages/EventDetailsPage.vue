@@ -36,25 +36,32 @@
         </section>
         <section class="row">
           <div class="col-6 text-white d-flex align-items-end">
-            <p class="fs-4">
+            <p v-if="activeEvent.isCanceled == false" class="fs-4">
               {{ activeEvent.capacity - activeEvent.ticketCount }} ticket(s) left
             </p>
           </div>
           <div class="col-6 text-end">
-            <button v-if="activeEvent.capacity - activeEvent.ticketCount > 0 && activeEvent.isCanceled == false"
+            <button
+              v-if="activeEvent.capacity - activeEvent.ticketCount > 0 && activeEvent.isCanceled == false && account.id"
               @click="getTicket()" class="btn btn-outline-light" role="button" type="button" title="get ticket">
               Get Ticket
             </button>
             <p v-if="activeEvent.isCanceled == true" class="m-0 text-danger fw-bold fs-4">This event is canceled</p>
             <p v-if="activeEvent.capacity - activeEvent.ticketCount <= 0" class="m-0 text-danger fw-bold fs-4">This event
               is sold out</p>
-            <!-- TODO add v-if logic for if user has a ticket to this event -->
-            <p class="m-0 text-primary fs-4">You are attending this event</p>
-
+            <!-- TODO add v-if logic for if user has a ticket to this event. make sure logic also removes if event is canceled -->
+            <p v-if="hasTicket" class="m-0 text-primary fs-4">You are attending this event</p>
           </div>
+        </section>
+        <section class="row">
+
+
         </section>
       </div>
     </section>
+    <section class="row"></section>
+
+    <!-- TODO Loading page -->
     <section class="row">
 
     </section>
@@ -78,6 +85,7 @@ export default {
     const route = useRoute()
     onMounted(() => {
       getEventById()
+      getTicketsByEvent()
     })
 
     async function getEventById() {
@@ -89,12 +97,27 @@ export default {
         Pop.error(error)
       }
     }
+
+    async function getTicketsByEvent() {
+      try {
+        const towerEventId = route.params.towerEventId
+        await ticketsService.getTicketsByEvent(towerEventId)
+      } catch (error) {
+        logger.error(error)
+        Pop.error(error)
+      }
+    }
     return {
       route,
       towerEvents: computed(() => AppState.towerEvents),
       comments: computed(() => AppState.comments),
       account: computed(() => AppState.account),
       activeEvent: computed(() => AppState.activeEvent),
+      tickets: computed(() => AppState.tickets),
+      hasTicket: computed(() =>
+        AppState.tickets.find(
+          (ticket) => ticket.creator.id == AppState.account.id
+        )),
 
       async getTicket() {
         try {

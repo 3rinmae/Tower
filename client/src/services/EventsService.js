@@ -14,7 +14,7 @@ class EventsService {
 
   async createEvent(eventData){
     const res = await api.post(`api/events`, eventData)
-    logger.log('create event', res.data)
+    // logger.log('create event', res.data)
     const newEvent = new TowerEvent(res.data)
     AppState.towerEvents.unshift(newEvent)
     return newEvent
@@ -23,7 +23,7 @@ class EventsService {
   async getEventById(towerEventId){
     AppState.activeEvent = null
     const res = await api.get(`api/events/${towerEventId}`)
-    logger.log('get event by id', res.data)
+    // logger.log('get event by id', res.data)
     AppState.activeEvent = new TowerEvent(res.data)
   }
 }
