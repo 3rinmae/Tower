@@ -53,18 +53,26 @@
             <p v-if="hasTicket" class="m-0 text-primary fs-4">You are attending this event</p>
           </div>
         </section>
+      </div>
+    </section>
+    <section v-else class="row">
+      <div class="col-12">
+        Loading Event Details...
+      </div>
+    </section>
+    <section class="row">
+      <div class="col-12 bg-dark-glass">
         <section class="row">
-
-
+          <p class="col-12 m-0">See who is attending</p>
+        </section>
+        <section class="row">
+          <div v-for="ticket in tickets" :key="ticket.creator" class="col-1">
+            <img class="rounded-circle" :src="ticket.creator.picture" alt="profile picture" :title="ticket.creator.name">
+          </div>
         </section>
       </div>
     </section>
-    <section class="row"></section>
 
-    <!-- TODO Loading page -->
-    <section class="row">
-
-    </section>
     <section class="row">
 
     </section>
