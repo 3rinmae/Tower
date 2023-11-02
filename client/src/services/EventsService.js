@@ -26,6 +26,12 @@ class EventsService {
     // logger.log('get event by id', res.data)
     AppState.activeEvent = new TowerEvent(res.data)
   }
+
+  async cancelEvent(towerEventId){
+    const res = await api.delete(`api/events/${towerEventId}`)
+    logger.log('cancel event', res.data)
+    AppState.activeEvent = new TowerEvent(res.data)
+  }
 }
 
 export const eventsService = new EventsService()

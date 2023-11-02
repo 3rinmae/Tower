@@ -18,11 +18,9 @@
       </div>
     </section>
     <section class="row">
-      <div class="col-12 d-flex justify-content-center d-md-block">
-        <div class="masonry">
-          <div v-for="towerEvent in towerEvents" :key="towerEvent.id">
-            <Event :towerEventProp="towerEvent" />
-          </div>
+      <div class="col-12 masonry">
+        <div v-for="towerEvent in towerEvents" :key="towerEvent.id" class="w-100">
+          <Event :towerEventProp="towerEvent" />
         </div>
       </div>
     </section>

@@ -5,11 +5,13 @@
         <img class="img-fluid eventImg" :src="activeEvent.coverImg" alt="event cover image" :title="activeEvent.name">
       </div>
       <div class="col-12 col-md-8">
-        <section class="row">
+        <!-- <section class="row">
           <div class="col-12 d-flex justify-content-end">
-            <i class="mdi mdi-dots-horizontal"></i>
+            <button title="cancel event" class="btn selectable" role="button">
+              <i class="mdi mdi-calendar-remove text-white fs-4"></i>
+            </button>
           </div>
-        </section>
+        </section> -->
         <section class="row text-white">
           <div class="col-6">
             <div class="fs-2">
@@ -21,7 +23,19 @@
           </div>
           <div class="col-6 fs-4 d-flex justify-content-end">
             <!-- {{ activeEvent.startDate.getDay() }} -->
-            {{ activeEvent.startDate.toLocaleDateString() }}
+            <div class="d-block">
+              <div>
+                <p class="m-0">
+                  {{ activeEvent.startDate.toLocaleDateString() }}
+                </p>
+              </div>
+              <div v-if="account.id == activeEvent.creatorId && activeEvent.isCanceled == false"
+                class="d-flex justify-content-end">
+                <button @click="cancelEvent()" title="cancel event" class="btn selectable text-white" role="button">
+                  <i class="mdi mdi-calendar-remove fs-4"></i>
+                </button>
+              </div>
+            </div>
           </div>
         </section>
         <section class="row text-white">
@@ -50,7 +64,8 @@
             <p v-if="activeEvent.capacity - activeEvent.ticketCount <= 0" class="m-0 text-danger fw-bold fs-4">This event
               is sold out</p>
             <!-- TODO add v-if logic for if user has a ticket to this event. make sure logic also removes if event is canceled -->
-            <p v-if="hasTicket" class="m-0 text-primary fs-4">You are attending this event</p>
+            <p v-if="hasTicket && activeEvent.isCanceled == false" class="m-0 text-primary fs-4">You are attending this
+              event</p>
           </div>
         </section>
       </div>
@@ -66,15 +81,32 @@
           <p class="col-12 m-0">See who is attending</p>
         </section>
         <section class="row">
-          <div v-for="ticket in tickets" :key="ticket.creator" class="col-1">
-            <img class="rounded-circle" :src="ticket.creator.picture" alt="profile picture" :title="ticket.creator.name">
+          <div v-for="ticket in tickets" :key="ticket.creator" class="col-1 p-1">
+            <img class="rounded-circle img-fluid" :src="ticket.creator.picture" alt="profile picture"
+              :title="ticket.creator.name">
           </div>
         </section>
       </div>
     </section>
-
-    <section class="row">
-
+    <section class="row my-3">
+      <div v-for="comment in comments" :key="comment.id" class="col-12 bg-dark-glass">
+        <!-- <Comment :commentProp="comment" /> -->
+        <!-- v-if="comment.eventId == activeEvent.id" -->
+        <div class="bg-light shadow">
+          <div class="col-1">
+            <img :src="comment.creator.picture" alt="comment creator picture" :title="comment.creator.name"
+              class="creatorImg rounded-circle">
+          </div>
+          <div class="col-11">
+            <p>
+              {{ comment.creator.name }}
+            </p>
+            <p>
+              {{ comment.body }}
+            </p>
+          </div>
+        </div>
+      </div>
     </section>
   </div>
 </template>
@@ -88,33 +120,47 @@ import { logger } from "../utils/Logger.js";
 import Pop from "../utils/Pop.js";
 import { eventsService } from "../services/EventsService.js";
 import { ticketsService } from "../services/TicketsService.js";
+import Comment from "../components/Comment.vue";
+import { commentsService } from "../services/CommentsService.js";
 export default {
   setup() {
-    const route = useRoute()
+    const route = useRoute();
     onMounted(() => {
-      getEventById()
-      getTicketsByEvent()
-    })
-
+      getEventById();
+      getTicketsByEvent();
+      getCommentsByEvent()
+    });
     async function getEventById() {
       try {
-        const towerEventId = route.params.towerEventId
-        await eventsService.getEventById(towerEventId)
-      } catch (error) {
-        logger.error(error)
-        Pop.error(error)
+        const towerEventId = route.params.towerEventId;
+        await eventsService.getEventById(towerEventId);
+      }
+      catch (error) {
+        logger.error(error);
+        Pop.error(error);
+      }
+    }
+    async function getTicketsByEvent() {
+      try {
+        const towerEventId = route.params.towerEventId;
+        await ticketsService.getTicketsByEvent(towerEventId);
+      }
+      catch (error) {
+        logger.error(error);
+        Pop.error(error);
       }
     }
 
-    async function getTicketsByEvent() {
+    async function getCommentsByEvent() {
       try {
         const towerEventId = route.params.towerEventId
-        await ticketsService.getTicketsByEvent(towerEventId)
+        await commentsService.getCommentsByEvent(towerEventId)
       } catch (error) {
-        logger.error(error)
-        Pop.error(error)
+        logger.error(error);
+        Pop.error(error);
       }
     }
+
     return {
       route,
       towerEvents: computed(() => AppState.towerEvents),
@@ -122,22 +168,43 @@ export default {
       account: computed(() => AppState.account),
       activeEvent: computed(() => AppState.activeEvent),
       tickets: computed(() => AppState.tickets),
-      hasTicket: computed(() =>
-        AppState.tickets.find(
-          (ticket) => ticket.creator.id == AppState.account.id
-        )),
-
+      hasTicket: computed(() => AppState.tickets.find((ticket) => ticket.creator.id == AppState.account.id)),
       async getTicket() {
         try {
-          const towerEventId = route.params.towerEventId
-          await ticketsService.getTicket(towerEventId)
-        } catch (error) {
-          logger.error(error)
-          Pop.error(error)
+          const towerEventId = route.params.towerEventId;
+          await ticketsService.getTicket(towerEventId);
+        }
+        catch (error) {
+          logger.error(error);
+          Pop.error(error);
+        }
+      },
+      async cancelEvent() {
+        try {
+          // const towerEventId = route.params.towerEventId
+          if (!this.activeEvent.isCanceled) {
+            const yes = await Pop.confirm("Are you sure you want to cancel this event?");
+            if (!yes) {
+              return;
+            }
+          }
+          else {
+            const yes = await Pop.confirm("Are you sure you want to un-cancel this event?");
+            if (!yes) {
+              return;
+            }
+          }
+          const towerEventId = route.params.towerEventId;
+          await eventsService.cancelEvent(towerEventId);
+        }
+        catch (error) {
+          logger.error(error);
+          Pop.error(error);
         }
       }
-    }
-  }
+    };
+  },
+  components: { Comment }
 };
 </script>
 
@@ -154,6 +221,13 @@ export default {
 .eventImg {
   height: 25rem;
   width: 25rem;
+  object-fit: cover;
+  position: center;
+}
+
+.creatorImg {
+  height: 5rem;
+  width: 5rem;
   object-fit: cover;
   position: center;
 }

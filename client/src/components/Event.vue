@@ -30,8 +30,8 @@ export default {
 
 <style lang="scss" scoped>
 img {
-  height: 16rem;
-  width: 100%;
+  // height: 16rem;
+  // width: 100%;
   object-fit: cover;
   position: center;
 }
