@@ -16,3 +16,15 @@ export class TowerEvent {
     this.creator = data.creator
   }
 }
+
+// const model {
+//   name: { type: String, required: true, maxLength: 50 },
+//   description: { type: String, required: true, maxLength: 1000 },
+//   coverImg: { type: String, required: true, maxLength: 1000 },
+//   location: { type: String, required: true, maxLength: 50 },
+//   capacity: { type: Number, required: true, maxLength: 100000, minLength: 1 },
+//   startDate: { type: Date, required: true },
+//   isCanceled: { type: Boolean, required: true, default: false },
+//   creatorId: { type: Schema.Types.ObjectId, required: true, ref: 'Account' },
+//   type: { type: String, enum: ['concert', 'convention', 'digital', 'sport'], required: true }
+// }

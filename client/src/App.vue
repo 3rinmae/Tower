@@ -7,12 +7,14 @@
   </main>
   <footer class="">
   </footer>
+  <CreateEvent />
 </template>
 
 <script>
 import { computed } from 'vue'
 import { AppState } from './AppState'
 import Navbar from './components/Navbar.vue'
+import CreateEvent from "./components/CreateEvent.vue"
 
 export default {
   setup() {
@@ -20,7 +22,7 @@ export default {
       appState: computed(() => AppState)
     }
   },
-  components: { Navbar }
+  components: { Navbar, CreateEvent }
 }
 </script>
 <style lang="scss">
