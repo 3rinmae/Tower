@@ -27,7 +27,6 @@
       </div>
     </section>
   </div>
-  <!-- <CreateEvent /> -->
 </template>
 
 <script>

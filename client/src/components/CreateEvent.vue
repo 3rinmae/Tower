@@ -25,12 +25,13 @@
               <input v-model="editable.capacity" placeholder="Total Capacity" type="number" class="form-control"
                 id="capacity" min="1" max="100000" title="capacity" aria-describedby="capacity" required>
             </div>
-            <div class="md-form md-outline input-with-post-icon datepicker">
-              <input v-model="editable.startDate" placeholder="Event date" type="date" id="startDate" class="form-control"
-                title="event date" aria-describedby="event date" required>
-              <label for="startDate">Event Date</label>
+            <div class="md-form md-outline input-with-post-icon datepicker d-flex align-items-center">
+              <label class="w-25" value="" for="startDate">Event Date</label>
+              <input v-model="editable.startDate" data-mdb-toggle="datepicker" placeholder="Event date" type="date"
+                id="startDate" class="form-control" title="event date" aria-describedby="event date" required>
             </div>
-            <div class="mb-3">
+            <div class="d-flex align-items-center">
+              <label class="w-25" for="startDate">Category</label>
               <select v-model="editable.type" class="form-select" id="type" title="category" aria-label="category"
                 required>
                 <option v-for="category in categories" :key="category" :value="category">{{ category }}</option>
@@ -38,7 +39,8 @@
             </div>
             <div>
               <textarea v-model="editable.description" maxlength="1000" class="form-control" id="description" rows="3"
-                title="event description" aria-describedby="event description" required></textarea>
+                title="event description" aria-describedby="event description" placeholder="Event Description"
+                required></textarea>
             </div>
             <div class="text-end">
               <button class="btn btn-primary" role="button" title="submit" type="submit">Create Event</button>
@@ -58,9 +60,12 @@ import { logger } from "../utils/Logger.js";
 import Pop from "../utils/Pop.js";
 import { eventsService } from "../services/EventsService.js";
 import { Modal } from "bootstrap";
+import { router } from "../router";
+import { useRouter } from "vue-router";
 export default {
   setup() {
     const editable = ref({})
+    const router = useRouter()
     watchEffect(() => {
       editable.value = {}
     })
@@ -76,9 +81,11 @@ export default {
       async createEvent() {
         try {
           const eventData = editable.value
-          await eventsService.createEvent(eventData)
+          const towerEvent = await eventsService.createEvent(eventData)
+          Pop.success("Event Created!")
           editable.value = {}
           Modal.getOrCreateInstance('#createEventFormModal').hide()
+          router.push({ name: "EventDetails", params: { towerEventId: towerEvent.id } })
         } catch (error) {
           logger.error(error)
           Pop.error(error)
