@@ -26,12 +26,12 @@
                 id="capacity" min="1" max="100000" title="capacity" aria-describedby="capacity" required>
             </div>
             <div class="md-form md-outline input-with-post-icon datepicker d-flex align-items-center">
-              <label class="w-25" value="" for="startDate">Event Date</label>
-              <input v-model="editable.startDate" data-mdb-toggle="datepicker" placeholder="Event date" type="date"
-                id="startDate" class="form-control" title="event date" aria-describedby="event date" required>
+              <label class="w-75 " value="" for="startDate">Event Date</label>
+              <input v-model="editable.startDate" data-mdb-toggle="datepicker" type="date" id="startDate"
+                class="form-control" title="event date" aria-describedby="event date" required>
             </div>
             <div class="d-flex align-items-center">
-              <label class="w-25" for="startDate">Category</label>
+              <label class="w-75" for="startDate">Category</label>
               <select v-model="editable.type" class="form-select" id="type" title="category" aria-label="category"
                 required>
                 <option v-for="category in categories" :key="category" :value="category">{{ category }}</option>
@@ -43,7 +43,8 @@
                 required></textarea>
             </div>
             <div class="text-end">
-              <button class="btn btn-primary" role="button" title="submit" type="submit">Create Event</button>
+              <button class="btn btn-primary" role="button" title="create event submit" type="submit">Create
+                Event</button>
             </div>
           </form>
         </div>
