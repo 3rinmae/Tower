@@ -49,18 +49,18 @@ export default {
   setup() {
     const route = useRoute()
     onMounted(() => {
-      // getMyTickets()
+      getMyTickets()
     })
 
-    // async function getMyTickets() {
-    //   try {
-    //     // const accountId = route.params.accountId
-    //     await ticketsService.getMyTickets()
-    //   } catch (error) {
-    //     logger.error(error)
-    //     Pop.error(error)
-    //   }
-    // }
+    async function getMyTickets() {
+      try {
+        // const accountId = route.params.accountId
+        await ticketsService.getMyTickets()
+      } catch (error) {
+        logger.error(error)
+        Pop.error(error)
+      }
+    }
     return {
       route,
       account: computed(() => AppState.account),

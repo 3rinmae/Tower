@@ -5,8 +5,8 @@
         :title="towerEventProp.name">
       <p class="text-white fs-5 pt-2 m-0">{{ towerEventProp.name }}</p>
       <div class="d-flex justify-content-end">
-        <p v-if="towerEventProp.isCanceled == true" class="text-danger m-0">Canceled</p>
-        <p v-else-if="towerEventProp.capacity - towerEventProp.ticketCount <= 0" class="text-danger m-0">Sold Out</p>
+        <p v-if="towerEventProp.isCanceled == true" class="red-text m-0">Canceled</p>
+        <p v-else-if="towerEventProp.capacity - towerEventProp.ticketCount <= 0" class="red-text m-0">Sold Out</p>
         <!-- TODO another v-else-if for if the date is in the past -->
         <p v-else class="text-light m-0"> {{ towerEventProp.capacity - towerEventProp.ticketCount }} ticket(s) left</p>
       </div>
@@ -30,8 +30,8 @@ export default {
 
 <style lang="scss" scoped>
 img {
-  // height: 16rem;
-  // width: 100%;
+  height: 16rem;
+  width: 16rem;
   object-fit: cover;
   position: center;
 }
@@ -47,5 +47,11 @@ img {
 
 .bg-dark-glass:hover {
   box-shadow: 0px 0px 9px black;
+}
+
+.red-text {
+  text-shadow: 0px 0px 12px white;
+  // font-weight: bold;
+  color: red;
 }
 </style>

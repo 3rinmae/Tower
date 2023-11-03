@@ -5,7 +5,7 @@
   <main>
     <router-view />
   </main>
-  
+
   <footer class="">
   </footer>
   <CreateEvent />
@@ -39,6 +39,7 @@ body {
   background-size: cover;
   background-position: top;
   background-color: white;
+  font-family: 'Bodoni Moda', serif;
 }
 
 footer {
@@ -56,5 +57,35 @@ footer {
     background-position: 50% 5%;
     background-color: white;
   }
+}
+
+.red-text {
+  text-shadow: 0px 0px 12px white;
+  // font-weight: bold;
+  color: red;
+}
+
+.bodoni {
+  font-family: 'Bodoni Moda', serif;
+}
+
+.indie-flower {
+  font-family: 'Indie Flower', cursive;
+}
+
+.nosifer {
+  font-family: 'Nosifer', sans-serif;
+}
+
+.poiret-one {
+  font-family: 'Poiret One', sans-serif;
+}
+
+.shadows1 {
+  font-family: 'Shadows Into Light', cursive;
+}
+
+.shadows2 {
+  font-family: 'Shadows Into Light Two', cursive;
 }
 </style>

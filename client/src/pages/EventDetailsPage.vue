@@ -58,8 +58,8 @@
               @click="getTicket()" class="btn btn-outline-light my-2" role="button" type="button" title="get ticket">
               Get Ticket
             </button>
-            <p v-if="activeEvent.isCanceled == true" class="text-danger fw-bold fs-4 my-2">This event is canceled</p>
-            <p v-if="activeEvent.capacity - activeEvent.ticketCount <= 0" class="text-danger fw-bold fs-4 my-2">This
+            <p v-if="activeEvent.isCanceled == true" class="red-text fw-bold fs-4 my-2">This event is canceled</p>
+            <p v-if="activeEvent.capacity - activeEvent.ticketCount <= 0" class="red-text fw-bold fs-4 my-2">This
               event is sold out</p>
             <p v-if="hasTicket && activeEvent.isCanceled == false" class=" text-primary fs-5 my-2">You are attending
               this

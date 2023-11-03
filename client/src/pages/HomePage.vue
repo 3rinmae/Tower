@@ -1,6 +1,6 @@
 <template>
-  <div v-if="!towerEvents">Loading Events</div>
-  <div class="container justify-content-center">
+  <div class="container" v-if="!towerEvents">Loading Events...</div>
+  <div class="container">
     <section class="row my-5 justify-content-center">
       <div class=" col-7 col-sm-12 mb-2">
         <div class="bg-dark-glass p-2 d-block d-sm-flex justify-content-around" title="filter events">
@@ -19,8 +19,9 @@
       </div>
     </section>
     <section class="row">
-      <div class="col-12 masonry">
-        <div v-for="towerEvent in towerEvents" :key="towerEvent.id" class="w-100">
+      <div class="col-12 d-flex flex-wrap justify-contents-center">
+        <div v-for="towerEvent in towerEvents" :key="towerEvent.id"
+          class="d-flex justify-content-center col-12 col-md-6 col-lg-4 col-xl-3">
           <Event :towerEventProp="towerEvent" />
         </div>
       </div>
@@ -78,10 +79,15 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.masonry {
-  columns: 260px;
-  justify-content: center;
-}
+// .masonry {
+//   columns: 260px;
+//   display: block;
+//   position: relative;
+//   // justify-content: center;
+//   overflow: hidden;
+//   // margin-top: 100px;
+//   // margin-bottom: 100px;
+// }
 
 .bg-dark-glass {
   background: rgba(0, 0, 0, 0.609);
@@ -89,6 +95,17 @@ export default {
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(6.7px);
   -webkit-backdrop-filter: blur(6.7px);
+}
+
+img {
+  height: 25rem;
+  width: 30rem;
+}
+
+
+
+.windsong {
+  font-family: 'WindSong', cursive;
 }
 
 // .home {
