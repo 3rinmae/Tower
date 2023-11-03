@@ -1,12 +1,16 @@
 <template>
   <div class="container">
-    <!-- Need to add bootstrap stuff -->
     <div class="about text-center">
       <h1 class="title-text">Welcome {{ account.name }}</h1>
       <img class="rounded account-img" :src="account.picture" alt="" />
       <p>{{ account.email }}</p>
     </div>
-    <section class="row justify-content-center">
+    <section v-if="!tickets.length && account.id" class="row">
+      <div>
+        Loading Account Page...
+      </div>
+    </section>
+    <section v-else class="row justify-content-center">
       <div class="col-md-6">
         <p class="fs-2 text-center title-text fw-bold">Upcoming Events</p>
         <div v-for="ticket in tickets" :key="ticket.id" class="row bg-dark m-3">
@@ -26,6 +30,11 @@
         </div>
       </div>
     </section>
+    <!-- <section v-if="!tickets" class="row">
+      <div>
+        Loading Account Page...
+      </div>
+    </section> -->
   </div>
 </template>
 
@@ -40,18 +49,18 @@ export default {
   setup() {
     const route = useRoute()
     onMounted(() => {
-      getMyTickets()
+      // getMyTickets()
     })
 
-    async function getMyTickets() {
-      try {
-        const accountId = route.params.accountId
-        await ticketsService.getMyTickets(accountId)
-      } catch (error) {
-        logger.error(error)
-        Pop.error(error)
-      }
-    }
+    // async function getMyTickets() {
+    //   try {
+    //     // const accountId = route.params.accountId
+    //     await ticketsService.getMyTickets()
+    //   } catch (error) {
+    //     logger.error(error)
+    //     Pop.error(error)
+    //   }
+    // }
     return {
       route,
       account: computed(() => AppState.account),

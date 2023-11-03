@@ -86,7 +86,7 @@
         </section>
       </div>
     </section>
-    <section class="row my-3 p-3 bg-dark-glass">
+    <section v-if="account.id" class="row my-3 p-3 bg-dark-glass">
       <div>
         <form @submit.prevent="createComment()">
           <div class="">
@@ -104,7 +104,30 @@
             <img :src="comment.creator.picture" alt="comment creator picture" :title="comment.creator.name"
               class="creatorImg rounded-circle">
           </div>
-
+          <div class="bg-light rounded w-100 p-2 ms-3">
+            <div class="d-flex justify-content-between">
+              <p class="fs-4 fw-bold m-0">
+                {{ comment.creator.name }}
+              </p>
+              <button @click="destroyComment(comment.id)" v-if="comment.creatorId == account.id" class="btn" type="button"
+                role="button" title="delete comment">
+                <i class="mdi mdi-delete-forever-outline"></i>
+              </button>
+            </div>
+            <p class="m-0">
+              {{ comment.body }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section v-else class="row ">
+      <div v-for="comment in comments" :key="comment.id" class="col-12 my-3 p-3 bg-dark-glass">
+        <div class=" d-flex">
+          <div>
+            <img :src="comment.creator.picture" alt="comment creator picture" :title="comment.creator.name"
+              class="creatorImg rounded-circle">
+          </div>
           <div class="bg-light rounded w-100 p-2 ms-3">
             <p class="fs-4 fw-bold m-0">
               {{ comment.creator.name }}
@@ -219,6 +242,19 @@ export default {
           await commentsService.createComment(commentData)
           Pop.success('Your comment has been submitted')
           editable.value = {}
+        } catch (error) {
+          logger.error(error);
+          Pop.error(error);
+        }
+      },
+
+      async destroyComment(commentId) {
+        try {
+          const yes = await Pop.confirm('Are you sure you would like to delete this comment?')
+          if (!yes) {
+            return
+          }
+          await commentsService.destroyComment(commentId)
         } catch (error) {
           logger.error(error);
           Pop.error(error);

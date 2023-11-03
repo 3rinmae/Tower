@@ -1,4 +1,5 @@
 <template>
+  <div v-if="!towerEvents">Loading Events</div>
   <div class="container justify-content-center">
     <section class="row my-5 justify-content-center">
       <div class=" col-7 col-sm-12 mb-2">

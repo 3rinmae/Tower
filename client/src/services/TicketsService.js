@@ -26,7 +26,7 @@ async getTicketsByEvent(towerEventId){
   AppState.tickets = res.data.map((ticket) => new Ticket(ticket))
 }
 
-async getMyTickets(accountId){
+async getMyTickets(){
   const res = await api.get(`account/tickets`)
   logger.log('get my tickets', res.data)
   AppState.tickets = res.data.map((ticket) => new Ticket(ticket))
