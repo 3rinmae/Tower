@@ -5,7 +5,7 @@
       <img class="rounded account-img" :src="account.picture" alt="" />
       <p>{{ account.email }}</p>
     </div>
-    <section v-if="!tickets.length && account.id" class="row">
+    <section v-if="!myTickets.length && !account.id" class="row">
       <div>
         Loading Account Page...
       </div>
@@ -13,17 +13,17 @@
     <section v-else class="row justify-content-center">
       <div class="col-md-6">
         <p class="fs-2 text-center title-text fw-bold">Upcoming Events</p>
-        <div v-for="ticket in tickets" :key="ticket.id" class="row bg-dark m-3">
+        <div v-for="myTicket in myTickets" :key="myTicket.id" class="row bg-dark m-3">
           <div class="col-12 col-md-6 p-0">
-            <img class="img-fluid eventImg" :src="ticket.event.coverImg" alt="event cover image"
-              :title="ticket.event.name">
+            <img class="img-fluid eventImg" :src="myTicket.event.coverImg" alt="event cover image"
+              :title="myTicket.event.name">
           </div>
           <div class="col col-sm-6 p-2 d-sm-flex align-content-sm-between flex-sm-wrap">
             <div>
-              <p class="m-0 fs-4 px-3"> {{ ticket.event.name }} </p>
+              <p class="m-0 fs-4 px-3"> {{ myTicket.event.name }} </p>
             </div>
             <div class="p-3">
-              <button @click="destroyTicket(ticket.id)" class="btn btn-outline-danger" role="button" type="button"
+              <button @click="destroyTicket(myTicket.id)" class="btn btn-outline-danger" role="button" type="button"
                 title="delete ticket">Delete Ticket</button>
             </div>
           </div>
@@ -65,6 +65,7 @@ export default {
       route,
       account: computed(() => AppState.account),
       tickets: computed(() => AppState.tickets),
+      myTickets: computed(() => AppState.myTickets),
 
       async destroyTicket(ticketId) {
         try {

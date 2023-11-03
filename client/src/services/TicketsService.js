@@ -29,13 +29,13 @@ async getTicketsByEvent(towerEventId){
 async getMyTickets(){
   const res = await api.get(`account/tickets`)
   logger.log('get my tickets', res.data)
-  AppState.tickets = res.data.map((ticket) => new Ticket(ticket))
+  AppState.myTickets = res.data.map((ticket) => new Ticket(ticket))
 }
 
 async destroyTicket(ticketId){
   const res = await api.delete(`api/tickets/${ticketId}`)
   logger.log(res.data)
-  AppState.tickets = AppState.tickets.filter((ticket) => ticket.id != ticketId)
+  AppState.myTickets = AppState.myTickets.filter((ticket) => ticket.id != ticketId)
 }
 }
 
