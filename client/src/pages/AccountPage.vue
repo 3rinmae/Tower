@@ -20,10 +20,11 @@
           </div>
           <div class="col col-sm-6 p-2 d-sm-flex align-content-sm-between flex-sm-wrap">
             <div>
-              <p class="m-0 fs-4 px-3"> {{ myTicket.event.name }} </p>
+              <p class="m-0 fs-3 px-3"> {{ myTicket.event.name }} </p>
+              <p class="m-0 fs-3 px-3"> {{ new Date(myTicket.event.startDate).toLocaleDateString() }} </p>
             </div>
             <div class="p-3">
-              <button @click="destroyTicket(myTicket.id)" class="btn btn-outline-danger" role="button" type="button"
+              <button @click="destroyTicket(myTicket.id)" class="btn btn-outline-danger w-100" role="button" type="button"
                 title="delete ticket">Delete Ticket</button>
             </div>
           </div>
