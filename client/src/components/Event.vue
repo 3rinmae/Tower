@@ -8,7 +8,7 @@
         <p v-if="towerEventProp.isCanceled == true" class="text-danger m-0">Canceled</p>
         <p v-else-if="towerEventProp.capacity - towerEventProp.ticketCount <= 0" class="text-danger m-0">Sold Out</p>
         <!-- TODO another v-else-if for if the date is in the past -->
-        <p v-else class="text-light m-0"> {{ towerEventProp.capacity - towerEventProp.ticketCount }} tickets left</p>
+        <p v-else class="text-light m-0"> {{ towerEventProp.capacity - towerEventProp.ticketCount }} ticket(s) left</p>
       </div>
     </router-link>
   </div>

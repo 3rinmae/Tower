@@ -1,29 +1,27 @@
 <template>
-  <div class="container">
-    <section v-if="activeEvent" class="row bg-dark-glass p-4 my-5 ">
-      <div class="col-md-4 d-flex justify-content-center  justify-content-md-start">
+  <div class="container p-5 p-md-0">
+    <section v-if="!activeEvent" class="row ">
+      <div class="col-12">
+        Loading Event Details...
+      </div>
+    </section>
+    <section v-else class="row bg-dark-glass p-4 my-5">
+      <div class="col-md-4 d-flex justify-content-center justify-content-md-start">
         <img class="img-fluid eventImg" :src="activeEvent.coverImg" alt="event cover image" :title="activeEvent.name">
       </div>
       <div class="col-12 col-md-8">
-        <!-- <section class="row">
-          <div class="col-12 d-flex justify-content-end">
-            <button title="cancel event" class="btn selectable" role="button">
-              <i class="mdi mdi-calendar-remove text-white fs-4"></i>
-            </button>
-          </div>
-        </section> -->
         <section class="row text-white">
-          <div class="col-6">
-            <div class="fs-2">
+          <div class="col-12 col-sm-6">
+            <div class="fs-1 pt-3 pt-sm-0">
               {{ activeEvent.name }}
             </div>
             <div class="fs-4">
               {{ activeEvent.location }}
             </div>
           </div>
-          <div class="col-6 fs-4 d-flex justify-content-end">
+          <div class="col-12 col-sm-6 fs-4 d-flex justify-content-sm-end">
             <!-- {{ activeEvent.startDate.getDay() }} -->
-            <div class="d-block">
+            <div class="">
               <div>
                 <p class="m-0">
                   {{ activeEvent.startDate.toLocaleDateString() }}
@@ -49,59 +47,69 @@
           </div>
         </section>
         <section class="row">
-          <div class="col-6 text-white d-flex align-items-end">
-            <p v-if="activeEvent.isCanceled == false" class="fs-4">
+          <div class="col-12 col-md-6 text-white d-flex align-items-start align-items-sm-end">
+            <p v-if="activeEvent.isCanceled == false" class="fs-5 m-0">
               {{ activeEvent.capacity - activeEvent.ticketCount }} ticket(s) left
             </p>
           </div>
-          <div class="col-6 text-end">
+          <div class="col-12 col-md-6 text-end">
             <button
               v-if="activeEvent.capacity - activeEvent.ticketCount > 0 && activeEvent.isCanceled == false && account.id"
-              @click="getTicket()" class="btn btn-outline-light" role="button" type="button" title="get ticket">
+              @click="getTicket()" class="btn btn-outline-light my-2" role="button" type="button" title="get ticket">
               Get Ticket
             </button>
-            <p v-if="activeEvent.isCanceled == true" class="m-0 text-danger fw-bold fs-4">This event is canceled</p>
-            <p v-if="activeEvent.capacity - activeEvent.ticketCount <= 0" class="m-0 text-danger fw-bold fs-4">This event
-              is sold out</p>
-            <!-- TODO add v-if logic for if user has a ticket to this event. make sure logic also removes if event is canceled -->
-            <p v-if="hasTicket && activeEvent.isCanceled == false" class="m-0 text-primary fs-4">You are attending this
+            <p v-if="activeEvent.isCanceled == true" class="text-danger fw-bold fs-4 my-2">This event is canceled</p>
+            <p v-if="activeEvent.capacity - activeEvent.ticketCount <= 0" class="text-danger fw-bold fs-4 my-2">This
+              event is sold out</p>
+            <p v-if="hasTicket && activeEvent.isCanceled == false" class=" text-primary fs-5 my-2">You are attending
+              this
               event</p>
           </div>
         </section>
       </div>
     </section>
-    <section v-else class="row">
+    <section v-if="!activeEvent" class="row">
       <div class="col-12">
         Loading Event Details...
       </div>
     </section>
-    <section class="row">
-      <div class="col-12 bg-dark-glass">
+    <section v-else-if="activeEvent.isCanceled == false" class="row my-5">
+      <div class="col-12 bg-dark-glass px-3 py-2">
         <section class="row">
-          <p class="col-12 m-0">See who is attending</p>
+          <p class="col-12 text-light m-0">See who is attending</p>
         </section>
         <section class="row">
-          <div v-for="ticket in tickets" :key="ticket.creator" class="col-1 p-1">
+          <div v-for="ticket in tickets" :key="ticket.creator" class="col-3 col-sm-2 col-md-1 p-2">
             <img class="rounded-circle img-fluid" :src="ticket.creator.picture" alt="profile picture"
               :title="ticket.creator.name">
           </div>
         </section>
       </div>
     </section>
-    <section class="row my-3">
-      <div v-for="comment in comments" :key="comment.id" class="col-12 bg-dark-glass">
-        <!-- <Comment :commentProp="comment" /> -->
-        <!-- v-if="comment.eventId == activeEvent.id" -->
-        <div class="bg-light shadow">
-          <div class="col-1">
+    <section class="row my-3 p-3 bg-dark-glass">
+      <div>
+        <form @submit.prevent="createComment()">
+          <div class="">
+            <textarea v-model="editable.body" placeholder="Join the conversation" maxlength="1000"
+              class="form-control my-3" id="comment" rows="3" title="comment about event"></textarea>
+          </div>
+          <div class="text-end">
+            <button class="btn btn-primary" title="post comment" role="button" type="submit">Post Comment</button>
+          </div>
+        </form>
+      </div>
+      <div v-for="comment in comments" :key="comment.id" class="col-12  p-3">
+        <div class=" d-flex">
+          <div>
             <img :src="comment.creator.picture" alt="comment creator picture" :title="comment.creator.name"
               class="creatorImg rounded-circle">
           </div>
-          <div class="col-11">
-            <p>
+
+          <div class="bg-light rounded w-100 p-2 ms-3">
+            <p class="fs-4 fw-bold m-0">
               {{ comment.creator.name }}
             </p>
-            <p>
+            <p class="m-0">
               {{ comment.body }}
             </p>
           </div>
@@ -115,15 +123,15 @@
 <script>
 import { useRoute } from "vue-router";
 import { AppState } from '../AppState.js';
-import { computed, reactive, onMounted } from 'vue';
+import { computed, reactive, onMounted, ref } from 'vue';
 import { logger } from "../utils/Logger.js";
 import Pop from "../utils/Pop.js";
 import { eventsService } from "../services/EventsService.js";
 import { ticketsService } from "../services/TicketsService.js";
-import Comment from "../components/Comment.vue";
 import { commentsService } from "../services/CommentsService.js";
 export default {
   setup() {
+    const editable = ref({})
     const route = useRoute();
     onMounted(() => {
       getEventById();
@@ -163,6 +171,7 @@ export default {
 
     return {
       route,
+      editable,
       towerEvents: computed(() => AppState.towerEvents),
       comments: computed(() => AppState.comments),
       account: computed(() => AppState.account),
@@ -201,10 +210,23 @@ export default {
           logger.error(error);
           Pop.error(error);
         }
+      },
+
+      async createComment() {
+        try {
+          const commentData = editable.value
+          commentData.eventId = route.params.towerEventId
+          await commentsService.createComment(commentData)
+          Pop.success('Your comment has been submitted')
+          editable.value = {}
+        } catch (error) {
+          logger.error(error);
+          Pop.error(error);
+        }
       }
     };
   },
-  components: { Comment }
+  components: {}
 };
 </script>
 
@@ -226,8 +248,8 @@ export default {
 }
 
 .creatorImg {
-  height: 5rem;
-  width: 5rem;
+  height: 4rem;
+  width: 4rem;
   object-fit: cover;
   position: center;
 }

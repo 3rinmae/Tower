@@ -31,6 +31,12 @@ async getMyTickets(accountId){
   logger.log('get my tickets', res.data)
   AppState.tickets = res.data.map((ticket) => new Ticket(ticket))
 }
+
+async destroyTicket(ticketId){
+  const res = await api.delete(`api/tickets/${ticketId}`)
+  logger.log(res.data)
+  AppState.tickets = AppState.tickets.filter((ticket) => ticket.id != ticketId)
+}
 }
 
 export const ticketsService = new TicketsService()
